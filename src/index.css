@@ -1,23 +1,48 @@
 @import "tailwindcss";
 
-/* Google Fonts - Inter */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+/* Google Fonts - Poppins (similar ao CRIA) */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
 /* ========================================
-   VARIÁVEIS CSS
+   VARIÁVEIS CSS - ESTILO CRIA
    ======================================== */
 :root {
-  /* Cores */
-  --cria-purple: #7A2FF2;
-  --cria-purple-dark: #5A18D6;
+  /* Cores CRIA */
+  --cria-purple: #7C3AED;
+  --cria-purple-dark: #6D28D9;
+  --cria-purple-light: #A78BFA;
+  --cria-purple-soft: #EDE9FE;
+  --cria-violet: #8B5CF6;
+  --cria-indigo: #4F46E5;
+  
+  /* Cores secundárias */
+  --cria-green: #10B981;
+  --cria-orange: #F59E0B;
+  --cria-pink: #EC4899;
+  
+  /* Neutros */
+  --cria-white: #FFFFFF;
+  --cria-gray-50: #F9FAFB;
+  --cria-gray-100: #F3F4F6;
+  --cria-gray-200: #E5E7EB;
+  --cria-gray-500: #6B7280;
+  --cria-gray-800: #1F2937;
+  --cria-gray-900: #111827;
   
   /* Tipografia */
-  --font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   
-  /* Transições - suaves e consistentes */
+  /* Transições suaves */
   --ease-out: cubic-bezier(0.33, 1, 0.68, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
-  --ease-spring: cubic-bezier(0.34, 1.2, 0.64, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Sombras CRIA */
+  --shadow-sm: 0 1px 2px rgba(124, 58, 237, 0.05);
+  --shadow-md: 0 4px 12px rgba(124, 58, 237, 0.1);
+  --shadow-lg: 0 10px 30px rgba(124, 58, 237, 0.15);
+  --shadow-xl: 0 20px 50px rgba(124, 58, 237, 0.2);
 }
 
 /* ========================================
@@ -42,21 +67,87 @@ button, input, textarea {
   outline: none;
 }
 
-/* Placeholder */
 input::placeholder {
-  color: #8B8B95;
+  color: var(--cria-gray-500);
   opacity: 1;
 }
 
 /* ========================================
-   ANIMAÇÕES SUAVES
+   ANIMAÇÕES FLUIDAS CRIA
    ======================================== */
 
-/* Entrada de mensagem - suave com leve bounce */
+/* Abertura do chat - bounce elegante */
+@keyframes chatOpen {
+  0% {
+    opacity: 0;
+    transform: scale(0.85) translateY(30px);
+  }
+  50% {
+    transform: scale(1.02) translateY(-5px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-chat-open {
+  animation: chatOpen 0.5s var(--ease-spring) forwards;
+}
+
+/* Fechamento suave */
+@keyframes chatClose {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+}
+
+.animate-chat-close {
+  animation: chatClose 0.25s var(--ease-out) forwards;
+}
+
+/* Mensagem do usuário */
+@keyframes messageUserIn {
+  0% {
+    opacity: 0;
+    transform: translateX(20px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+.animate-message-user {
+  animation: messageUserIn 0.4s var(--ease-spring) forwards;
+}
+
+/* Mensagem do bot */
+@keyframes messageBotIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-20px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+.animate-message-bot {
+  animation: messageBotIn 0.4s var(--ease-spring) forwards;
+}
+
+/* Entrada genérica */
 @keyframes messageIn {
   0% {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(15px);
   }
   100% {
     opacity: 1;
@@ -68,97 +159,206 @@ input::placeholder {
   animation: messageIn 0.35s var(--ease-out) forwards;
 }
 
-/* Typing dots - animação suave e fluida */
-@keyframes typingDot {
-  0% {
-    transform: translateY(0);
-    opacity: 0.4;
+/* Typing wave - mais divertido */
+@keyframes typingBounce {
+  0%, 60%, 100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.5;
   }
-  25% {
-    transform: translateY(-4px);
+  30% {
+    transform: translateY(-8px) scale(1.1);
     opacity: 1;
-  }
-  50% {
-    transform: translateY(0);
-    opacity: 0.4;
-  }
-  100% {
-    transform: translateY(0);
-    opacity: 0.4;
   }
 }
 
 .typing-dot {
   display: inline-block;
-  animation: typingDot 1.4s ease-in-out infinite;
+  animation: typingBounce 1s ease-in-out infinite;
 }
 
-.typing-dot:nth-child(2) {
-  animation-delay: 0.2s;
-}
+.typing-dot:nth-child(1) { animation-delay: 0s; }
+.typing-dot:nth-child(2) { animation-delay: 0.12s; }
+.typing-dot:nth-child(3) { animation-delay: 0.24s; }
 
-.typing-dot:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-/* Pulse suave para botão flutuante */
-@keyframes pulseSoft {
-  0%, 100% {
+/* Pulse para botão flutuante */
+@keyframes pulseRing {
+  0% {
     transform: scale(1);
-    opacity: 0.35;
+    opacity: 0.5;
   }
-  50% {
-    transform: scale(1.15);
+  100% {
+    transform: scale(1.4);
     opacity: 0;
   }
 }
 
 .animate-pulse-soft {
-  animation: pulseSoft 2s ease-out infinite;
+  animation: pulseRing 2s ease-out infinite;
 }
 
-/* Spin loader */
-@keyframes spin {
-  to { 
-    transform: rotate(360deg); 
+/* Glow pulsante */
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 8px 30px rgba(124, 58, 237, 0.4);
+  }
+  50% {
+    box-shadow: 0 8px 40px rgba(124, 58, 237, 0.6);
   }
 }
 
+.animate-glow {
+  animation: glowPulse 2.5s ease-in-out infinite;
+}
+
+/* Fade in para chips */
+@keyframes chipFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-chip-in {
+  animation: chipFadeIn 0.35s var(--ease-spring) forwards;
+}
+
+/* Spin suave */
+@keyframes spinSmooth {
+  to { transform: rotate(360deg); }
+}
+
 .animate-spin {
-  animation: spin 0.8s linear infinite;
+  animation: spinSmooth 0.9s linear infinite;
+}
+
+/* Breathing do avatar */
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+
+.animate-breathe {
+  animation: breathe 3.5s ease-in-out infinite;
+}
+
+/* Online pulse */
+@keyframes onlinePulse {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5);
+  }
+  50% {
+    opacity: 0.9;
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0);
+  }
+}
+
+.animate-online {
+  animation: onlinePulse 2s ease-in-out infinite;
+}
+
+/* Shimmer effect */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, 
+    var(--cria-purple-soft) 0%, 
+    var(--cria-white) 50%, 
+    var(--cria-purple-soft) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
 }
 
 /* ========================================
-   SCROLLBAR MINIMALISTA
+   CLASSES UTILITÁRIAS
+   ======================================== */
+
+.hover-lift {
+  transition: transform 0.3s var(--ease-spring), box-shadow 0.3s var(--ease-smooth);
+}
+
+.hover-lift:hover {
+  transform: translateY(-3px);
+}
+
+.hover-scale {
+  transition: transform 0.25s var(--ease-spring);
+}
+
+.hover-scale:hover {
+  transform: scale(1.08);
+}
+
+.hover-glow {
+  transition: box-shadow 0.3s var(--ease-smooth);
+}
+
+.hover-glow:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+/* Gradiente CRIA */
+.gradient-cria {
+  background: linear-gradient(135deg, var(--cria-violet) 0%, var(--cria-purple-dark) 100%);
+}
+
+.gradient-cria-soft {
+  background: linear-gradient(135deg, var(--cria-purple-soft) 0%, #F5F3FF 100%);
+}
+
+/* ========================================
+   SCROLLBAR CRIA
    ======================================== */
 .cria-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: #D4D4D4 transparent;
+  scrollbar-color: rgba(124, 58, 237, 0.25) transparent;
 }
 
 .cria-scrollbar::-webkit-scrollbar {
-  width: 5px;
+  width: 6px;
 }
 
 .cria-scrollbar::-webkit-scrollbar-track {
   background: transparent;
+  margin: 8px 0;
 }
 
 .cria-scrollbar::-webkit-scrollbar-thumb {
-  background: #D4D4D4;
-  border-radius: 10px;
+  background: rgba(124, 58, 237, 0.25);
+  border-radius: 20px;
+  transition: background 0.2s ease;
 }
 
 .cria-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #A3A3A3;
+  background: rgba(124, 58, 237, 0.4);
 }
 
 /* ========================================
    SELEÇÃO DE TEXTO
    ======================================== */
 ::selection {
-  background-color: rgba(122, 47, 242, 0.15);
-  color: #5A18D6;
+  background-color: rgba(124, 58, 237, 0.2);
+  color: var(--cria-purple-dark);
+}
+
+/* ========================================
+   FOCUS STATES
+   ======================================== */
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--cria-purple);
+  outline-offset: 2px;
 }
 
 /* ========================================

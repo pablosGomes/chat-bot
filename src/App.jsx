@@ -5,26 +5,32 @@ import { sendMessageToMistral } from "./services/mistralApi";
 
 export default function App() {
   const [aberto, setAberto] = useState(false);
+  const [fechando, setFechando] = useState(false);
   const [chatHistory, setChatHistory] = useState([
     {
       role: "bot",
-      text: "Olá! 👋 Sou a cint.ia, sua assistente do CRIA. Estou aqui para te ajudar com redações, dúvidas sobre a plataforma ou dicas para arrasar no ENEM. Como posso te ajudar hoje?",
+      text: "Oi! 👋 Sou a cint.ia, sua parceira do CRIA. Tô aqui pra te ajudar com redações, tirar dúvidas da plataforma ou dar aquelas dicas pra você arrasar no ENEM. Bora?",
     },
   ]);
-  const [animando, setAnimando] = useState(false);
+  const [enviandoSugestao, setEnviandoSugestao] = useState(false);
   const mensagensRef = useRef(null);
 
+  const handleOpen = () => {
+    setAberto(true);
+    setFechando(false);
+  };
+
   const handleClose = () => {
-    setAnimando(true);
+    setFechando(true);
     setTimeout(() => {
       setAberto(false);
+      setFechando(false);
       setChatHistory([
         {
           role: "bot",
-          text: "Olá! 👋 Sou a cint.ia, sua assistente do CRIA. Estou aqui para te ajudar com redações, dúvidas sobre a plataforma ou dicas para arrasar no ENEM. Como posso te ajudar hoje?",
+          text: "Oi! 👋 Sou a cint.ia, sua parceira do CRIA. Tô aqui pra te ajudar com redações, tirar dúvidas da plataforma ou dar aquelas dicas pra você arrasar no ENEM. Bora?",
         },
       ]);
-      setAnimando(false);
     }, 250);
   };
 
@@ -44,9 +50,10 @@ export default function App() {
   ];
 
   const enviarSugestao = async (texto) => {
-    // constrói histórico para a API sem o marcador de pensamento
+    if (enviandoSugestao) return;
+    setEnviandoSugestao(true);
+    
     const historyForApi = [...chatHistory, { role: "user", text: texto }];
-    // mostra imediatamente no chat com indicador de pensando
     setChatHistory([...historyForApi, { role: "thinking", text: "" }]);
 
     try {
@@ -54,14 +61,14 @@ export default function App() {
 
       setChatHistory((history) => {
         const novaLista = [...history];
-        novaLista.pop(); // remove "thinking"
+        novaLista.pop();
         novaLista.push({ role: "bot", text: resposta });
         return novaLista;
       });
     } catch (error) {
       setChatHistory((history) => {
         const novaLista = [...history];
-        novaLista.pop(); // remove "thinking"
+        novaLista.pop();
         novaLista.push({
           role: "bot",
           text: "Ops! 😅 Tive um probleminha. Pode tentar de novo?",
@@ -69,6 +76,8 @@ export default function App() {
         return novaLista;
       });
       console.error("Erro ao enviar sugestão:", error);
+    } finally {
+      setEnviandoSugestao(false);
     }
   };
 
@@ -78,66 +87,71 @@ export default function App() {
     return chatHistory[index - 1].role !== chatHistory[index].role;
   };
 
+  const getMessageAnimation = (role) => {
+    if (role === "user") return "animate-message-user";
+    if (role === "bot" || role === "thinking") return "animate-message-bot";
+    return "animate-message-in";
+  };
+
   return (
     <div 
       className="fixed z-[9999]"
       style={{ 
-        bottom: '18px', 
-        right: '18px',
-        fontFamily: "'Inter', system-ui, sans-serif"
+        bottom: '20px', 
+        right: '20px',
+        fontFamily: "'Poppins', system-ui, sans-serif"
       }}
     >
       {aberto ? (
         <div
-          style={{
-            opacity: animando ? 0 : 1,
-            transform: animando ? 'scale(0.96) translateY(10px)' : 'scale(1) translateY(0)',
-            transition: 'all 0.3s cubic-bezier(0.33, 1, 0.68, 1)',
-            transformOrigin: 'bottom right'
-          }}
+          className={fechando ? 'animate-chat-close' : 'animate-chat-open'}
+          style={{ transformOrigin: 'bottom right' }}
         >
-          {/* CONTAINER */}
+          {/* CONTAINER PRINCIPAL */}
           <div 
-            className="flex flex-col bg-white overflow-hidden"
+            className="flex flex-col overflow-hidden"
             style={{ 
-              width: 'min(400px, calc(100vw - 36px))',
-              height: 'min(600px, calc(100vh - 100px))',
-              borderRadius: '24px',
-              boxShadow: '0 12px 40px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.04)'
+              width: 'min(400px, calc(100vw - 40px))',
+              height: 'min(620px, calc(100vh - 100px))',
+              borderRadius: '28px',
+              background: '#FFFFFF',
+              boxShadow: '0 25px 60px rgba(124, 58, 237, 0.15), 0 0 0 1px rgba(124, 58, 237, 0.05)'
             }}
           >
             
-            {/* HEADER */}
+            {/* HEADER CRIA */}
             <header 
               className="shrink-0 flex items-center justify-between"
               style={{ 
-                background: 'linear-gradient(135deg, #7A2FF2 0%, #5A18D6 100%)',
-                padding: '14px 16px',
+                background: 'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 50%, #6D28D9 100%)',
+                padding: '16px 18px',
+                borderRadius: '28px 28px 0 0',
               }}
             >
               <div className="flex items-center gap-3">
-                {/* Avatar premium */}
-                <div className="relative">
+                {/* Avatar com efeito */}
+                <div className="relative animate-breathe">
                   <div 
                     className="flex items-center justify-center overflow-hidden"
                     style={{ 
-                      width: '46px', 
-                      height: '46px', 
-                      borderRadius: '14px',
+                      width: '48px', 
+                      height: '48px', 
+                      borderRadius: '16px',
                       background: 'white',
-                      boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
                     }}
                   >
-                    <BotAvatarIcon size={40} />
+                    <BotAvatarIcon size={42} />
                   </div>
                   <div 
-                    className="absolute flex items-center justify-center"
+                    className="absolute flex items-center justify-center animate-online"
                     style={{ 
-                      bottom: '-3px', 
-                      right: '-3px',
+                      bottom: '-2px', 
+                      right: '-2px',
                       background: 'white',
                       borderRadius: '50%',
-                      padding: '2px'
+                      padding: '2px',
+                      boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
                     }}
                   >
                     <OnlineIcon size={14} />
@@ -146,22 +160,24 @@ export default function App() {
                 
                 <div className="text-white">
                   <div className="flex items-center gap-2">
-                    <h1 style={{ fontSize: '17px', fontWeight: 600 }}>cint.ia</h1>
+                    <h1 style={{ fontSize: '18px', fontWeight: 600, letterSpacing: '-0.01em' }}>cint.ia</h1>
                     <span 
                       className="flex items-center gap-1"
                       style={{ 
                         background: 'rgba(255,255,255,0.2)', 
-                        padding: '3px 8px',
-                        borderRadius: '6px',
+                        backdropFilter: 'blur(10px)',
+                        padding: '4px 10px',
+                        borderRadius: '20px',
                         fontSize: '10px',
-                        fontWeight: 600
+                        fontWeight: 600,
+                        letterSpacing: '0.02em'
                       }}
                     >
                       <AISparkleIcon size={10} /> IA
                     </span>
                   </div>
-                  <p style={{ fontSize: '12px', opacity: 0.85, marginTop: '2px' }}>
-                    Assistente Virtual
+                  <p style={{ fontSize: '12px', opacity: 0.9, marginTop: '2px', fontWeight: 400 }}>
+                    Sua assistente do CRIA
                   </p>
                 </div>
               </div>
@@ -169,59 +185,62 @@ export default function App() {
               <button
                 onClick={handleClose}
                 aria-label="Fechar chat"
-                className="flex items-center justify-center text-white"
+                className="flex items-center justify-center text-white hover-scale"
                 style={{ 
-                  width: '38px', height: '38px', 
-                  borderRadius: '12px',
-                  background: 'transparent',
-                  transition: 'all 0.3s ease',
+                  width: '40px', height: '40px', 
+                  borderRadius: '14px',
+                  background: 'rgba(255,255,255,0.1)',
+                  backdropFilter: 'blur(10px)',
+                  transition: 'all 0.25s ease',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'rgba(255,255,255,0.15)';
-                  e.currentTarget.style.transform = 'scale(1.05)';
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.2)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'transparent';
-                  e.currentTarget.style.transform = 'scale(1)';
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
                 }}
               >
-                <CloseIcon size={20} />
+                <CloseIcon size={18} />
               </button>
             </header>
 
-            {/* MENSAGENS */}
+            {/* ÁREA DE MENSAGENS */}
             <div 
               className="flex-1 overflow-y-auto cria-scrollbar"
               ref={mensagensRef}
-              style={{ background: '#F5F5F7', padding: '16px' }}
+              style={{ 
+                background: 'linear-gradient(180deg, #FAFAFA 0%, #F5F3FF 100%)', 
+                padding: '18px' 
+              }}
             >
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 {chatHistory.map((chat, index) => (
                   <div
                     key={index}
-                    className={`animate-message-in flex ${chat.role === "user" ? "justify-end" : "justify-start"}`}
+                    className={`${getMessageAnimation(chat.role)} flex ${chat.role === "user" ? "justify-end" : "justify-start"}`}
                     style={{ 
                       alignItems: 'flex-end', 
-                      gap: '8px',
-                      animationDelay: `${index * 0.05}s`
+                      gap: '10px',
+                      animationDelay: `${Math.min(index * 0.08, 0.3)}s`
                     }}
                   >
-                    {/* Avatar Bot */}
+                    {/* Avatar do Bot */}
                     {chat.role !== "user" && (
                       <div 
                         style={{ 
-                          width: '34px', height: '34px',
+                          width: '36px', height: '36px',
                           opacity: shouldShowAvatar(index) ? 1 : 0,
-                          transition: 'opacity 0.25s ease',
+                          transform: shouldShowAvatar(index) ? 'scale(1)' : 'scale(0.8)',
+                          transition: 'all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)',
                           flexShrink: 0
                         }}
                       >
                         <div 
                           className="w-full h-full flex items-center justify-center overflow-hidden"
                           style={{ 
-                            background: 'linear-gradient(135deg, #F5EDFF 0%, #EDE4FF 100%)', 
+                            background: 'linear-gradient(135deg, #EDE9FE 0%, #DDD6FE 100%)', 
                             borderRadius: '12px',
-                            boxShadow: '0 1px 3px rgba(122, 47, 242, 0.1)'
+                            boxShadow: '0 2px 8px rgba(124, 58, 237, 0.1)'
                           }}
                         >
                           <BotAvatarIcon size={28} />
@@ -229,46 +248,48 @@ export default function App() {
                       </div>
                     )}
                     
-                    {/* Balão */}
+                    {/* Balão de Mensagem */}
                     <div
+                      className="hover-lift"
                       style={{
-                        maxWidth: '78%',
-                        padding: '12px 16px',
-                        fontSize: '15px',
-                        lineHeight: '1.5',
+                        maxWidth: '80%',
+                        padding: '14px 18px',
+                        fontSize: '14px',
+                        lineHeight: '1.6',
+                        fontWeight: 400,
                         ...(chat.role === "user" 
                           ? {
-                              background: 'linear-gradient(135deg, #7A2FF2 0%, #5A18D6 100%)',
+                              background: 'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)',
                               color: '#FFFFFF',
                               borderRadius: '20px 20px 6px 20px',
-                              boxShadow: '0 2px 12px rgba(122, 47, 242, 0.2)'
+                              boxShadow: '0 4px 15px rgba(124, 58, 237, 0.25)'
                             }
                           : {
                               background: '#FFFFFF',
-                              color: '#1F1F1F',
+                              color: '#1F2937',
                               borderRadius: '20px 20px 20px 6px',
-                              boxShadow: '0 1px 4px rgba(0, 0, 0, 0.05)',
-                              border: '1px solid rgba(0, 0, 0, 0.06)',
+                              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
+                              border: '1px solid rgba(124, 58, 237, 0.08)',
                             }
                         )
                       }}
                     >
                       {chat.role === "thinking" ? (
-                        <div className="flex items-center" style={{ gap: '5px', padding: '4px 6px' }}>
+                        <div className="flex items-center" style={{ gap: '7px', padding: '4px 8px' }}>
                           <span className="typing-dot" style={{ 
-                            width: '8px', height: '8px', 
+                            width: '9px', height: '9px', 
                             borderRadius: '50%', 
-                            background: '#7A2FF2' 
+                            background: 'linear-gradient(135deg, #8B5CF6, #7C3AED)' 
                           }} />
                           <span className="typing-dot" style={{ 
-                            width: '8px', height: '8px', 
+                            width: '9px', height: '9px', 
                             borderRadius: '50%', 
-                            background: '#7A2FF2' 
+                            background: 'linear-gradient(135deg, #8B5CF6, #7C3AED)' 
                           }} />
                           <span className="typing-dot" style={{ 
-                            width: '8px', height: '8px', 
+                            width: '9px', height: '9px', 
                             borderRadius: '50%', 
-                            background: '#7A2FF2' 
+                            background: 'linear-gradient(135deg, #8B5CF6, #7C3AED)' 
                           }} />
                         </div>
                       ) : (
@@ -283,42 +304,46 @@ export default function App() {
             {/* FOOTER */}
             <footer 
               style={{ 
-                padding: '14px 16px 18px',
+                padding: '16px 18px 20px',
                 background: '#FFFFFF',
-                borderTop: '1px solid rgba(0, 0, 0, 0.06)'
+                borderTop: '1px solid rgba(124, 58, 237, 0.06)'
               }}
             >
-              {/* Chips */}
+              {/* Chips de Sugestão */}
               {chatHistory.length === 1 && (
-                <div style={{ display: 'flex', gap: '8px', marginBottom: '14px', flexWrap: 'wrap' }}>
-                  {sugestoes.map((texto) => (
+                <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', flexWrap: 'wrap' }}>
+                  {sugestoes.map((texto, idx) => (
                     <button
                       key={texto}
-                      onClick={() => {
-                        enviarSugestao(texto);
-                      }}
+                      onClick={() => enviarSugestao(texto)}
+                      disabled={enviandoSugestao}
+                      className="animate-chip-in"
                       style={{ 
-                        padding: '10px 16px',
+                        padding: '10px 18px',
                         fontSize: '13px',
-                        fontWeight: 600,
-                        color: '#5A18D6',
-                        background: '#F5F0FF',
-                        border: '1.5px solid #7A2FF2',
-                        borderRadius: '22px',
-                        cursor: 'pointer',
-                        transition: 'all 0.35s ease',
-                        transform: 'translateY(0)',
-                        boxShadow: 'none',
+                        fontWeight: 500,
+                        color: enviandoSugestao ? '#9CA3AF' : '#7C3AED',
+                        background: enviandoSugestao ? '#F3F4F6' : 'linear-gradient(135deg, #EDE9FE 0%, #F5F3FF 100%)',
+                        border: `1.5px solid ${enviandoSugestao ? '#E5E7EB' : '#A78BFA'}`,
+                        borderRadius: '25px',
+                        cursor: enviandoSugestao ? 'not-allowed' : 'pointer',
+                        transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                        animationDelay: `${idx * 0.08}s`,
+                        opacity: enviandoSugestao ? 0.6 : 1,
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.background = '#7A2FF2';
-                        e.currentTarget.style.color = '#FFFFFF';
-                        e.currentTarget.style.transform = 'translateY(-3px)';
-                        e.currentTarget.style.boxShadow = '0 6px 20px rgba(122, 47, 242, 0.3)';
+                        if (!enviandoSugestao) {
+                          e.currentTarget.style.background = 'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)';
+                          e.currentTarget.style.color = '#FFFFFF';
+                          e.currentTarget.style.border = '1.5px solid transparent';
+                          e.currentTarget.style.transform = 'translateY(-3px)';
+                          e.currentTarget.style.boxShadow = '0 8px 20px rgba(124, 58, 237, 0.3)';
+                        }
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.background = '#F5F0FF';
-                        e.currentTarget.style.color = '#5A18D6';
+                        e.currentTarget.style.background = enviandoSugestao ? '#F3F4F6' : 'linear-gradient(135deg, #EDE9FE 0%, #F5F3FF 100%)';
+                        e.currentTarget.style.color = enviandoSugestao ? '#9CA3AF' : '#7C3AED';
+                        e.currentTarget.style.border = `1.5px solid ${enviandoSugestao ? '#E5E7EB' : '#A78BFA'}`;
                         e.currentTarget.style.transform = 'translateY(0)';
                         e.currentTarget.style.boxShadow = 'none';
                       }}
@@ -331,67 +356,72 @@ export default function App() {
 
               <MensagemForm setChatHistory={setChatHistory} chatHistory={chatHistory} />
               
-              <div className="flex items-center justify-center gap-1.5" style={{ marginTop: '14px' }}>
-                <div style={{ width: '6px', height: '6px', background: '#10B981', borderRadius: '50%' }} />
+              {/* Powered by */}
+              <div className="flex items-center justify-center gap-2" style={{ marginTop: '14px' }}>
+                <div 
+                  className="animate-online"
+                  style={{ width: '6px', height: '6px', background: '#10B981', borderRadius: '50%' }} 
+                />
                 <span style={{ fontSize: '11px', color: '#9CA3AF', fontWeight: 500 }}>
-                  Powered by CRIA
+                  Powered by <span style={{ color: '#7C3AED', fontWeight: 600 }}>CRIA</span>
                 </span>
               </div>
             </footer>
           </div>
         </div>
       ) : (
-        /* BOTÃO FLUTUANTE PREMIUM */
+        /* BOTÃO FLUTUANTE CRIA */
         <button 
-          onClick={() => setAberto(true)} 
+          onClick={handleOpen} 
           aria-label="Abrir chat"
           className="relative flex items-center justify-center group"
-          style={{ width: '66px', height: '66px' }}
+          style={{ width: '68px', height: '68px' }}
         >
           {/* Anel de pulse */}
           <div 
             className="absolute animate-pulse-soft"
             style={{ 
-              inset: '-4px',
-              background: 'linear-gradient(135deg, #9D5CFF 0%, #7A2FF2 100%)',
+              inset: '-6px',
+              background: 'linear-gradient(135deg, #A78BFA 0%, #7C3AED 100%)',
               borderRadius: '50%',
-              opacity: 0.4
+              opacity: 0.5
             }}
           />
           
           {/* Botão principal */}
           <div 
-            className="relative flex items-center justify-center"
+            className="relative flex items-center justify-center animate-glow"
             style={{ 
-              width: '62px', 
-              height: '62px',
-              background: 'linear-gradient(145deg, #8B3DFF 0%, #7A2FF2 50%, #5A18D6 100%)',
+              width: '64px', 
+              height: '64px',
+              background: 'linear-gradient(145deg, #A78BFA 0%, #8B5CF6 40%, #7C3AED 100%)',
               borderRadius: '50%',
-              boxShadow: '0 8px 28px rgba(122, 47, 242, 0.45), inset 0 1px 1px rgba(255,255,255,0.2)',
-              transition: 'all 0.35s cubic-bezier(0.34, 1.2, 0.64, 1)',
+              boxShadow: '0 8px 30px rgba(124, 58, 237, 0.4), inset 0 1px 1px rgba(255,255,255,0.25)',
+              transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
               transform: 'scale(1)',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'scale(1.08) translateY(-2px)';
-              e.currentTarget.style.boxShadow = '0 12px 36px rgba(122, 47, 242, 0.55), inset 0 1px 1px rgba(255,255,255,0.3)';
+              e.currentTarget.style.transform = 'scale(1.12) translateY(-4px)';
+              e.currentTarget.style.boxShadow = '0 16px 45px rgba(124, 58, 237, 0.5), inset 0 1px 1px rgba(255,255,255,0.3)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = 'scale(1) translateY(0)';
-              e.currentTarget.style.boxShadow = '0 8px 28px rgba(122, 47, 242, 0.45), inset 0 1px 1px rgba(255,255,255,0.2)';
+              e.currentTarget.style.boxShadow = '0 8px 30px rgba(124, 58, 237, 0.4), inset 0 1px 1px rgba(255,255,255,0.25)';
             }}
           >
-            <ChatBubbleIcon size={32} />
+            <ChatBubbleIcon size={30} />
             
             {/* Indicador online */}
             <div 
+              className="animate-online"
               style={{ 
                 position: 'absolute',
-                top: '1px', 
-                right: '1px',
+                top: '2px', 
+                right: '2px',
                 background: 'white',
                 borderRadius: '50%',
                 padding: '2px',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                boxShadow: '0 2px 6px rgba(0,0,0,0.12)'
               }}
             >
               <OnlineIcon size={12} />

@@ -1,74 +1,70 @@
-// Ícones premium personalizados para o chatbot CRIA
+// Ícones CRIA - Design alinhado com a marca
 
-// Avatar do Bot - Design premium com gradiente
+// Avatar do Bot CRIA
 export const BotAvatarIcon = ({ size = 24 }) => (
   <svg width={size} height={size} viewBox="0 0 40 40" fill="none">
     <defs>
-      <linearGradient id="botGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="#9D5CFF"/>
-        <stop offset="100%" stopColor="#7A2FF2"/>
+      <linearGradient id="criaGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="#A78BFA"/>
+        <stop offset="50%" stopColor="#8B5CF6"/>
+        <stop offset="100%" stopColor="#7C3AED"/>
       </linearGradient>
       <linearGradient id="shineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="white" stopOpacity="0.4"/>
+        <stop offset="0%" stopColor="white" stopOpacity="0.5"/>
         <stop offset="100%" stopColor="white" stopOpacity="0"/>
       </linearGradient>
     </defs>
     {/* Fundo circular */}
-    <circle cx="20" cy="20" r="18" fill="url(#botGradient)"/>
+    <circle cx="20" cy="20" r="18" fill="url(#criaGradient)"/>
     {/* Brilho sutil */}
     <ellipse cx="14" cy="12" rx="8" ry="6" fill="url(#shineGradient)"/>
     {/* Rosto do bot */}
-    <rect x="10" y="14" width="20" height="14" rx="4" fill="white"/>
-    {/* Olhos */}
-    <circle cx="15" cy="20" r="2.5" fill="#7A2FF2"/>
-    <circle cx="25" cy="20" r="2.5" fill="#7A2FF2"/>
+    <rect x="10" y="14" width="20" height="14" rx="5" fill="white"/>
+    {/* Olhos - estilo CRIA */}
+    <circle cx="15" cy="20" r="2.5" fill="#7C3AED"/>
+    <circle cx="25" cy="20" r="2.5" fill="#7C3AED"/>
     {/* Reflexo nos olhos */}
     <circle cx="14" cy="19" r="0.8" fill="white"/>
     <circle cx="24" cy="19" r="0.8" fill="white"/>
+    {/* Sorriso sutil */}
+    <path d="M16 24C16 24 17.5 25.5 20 25.5C22.5 25.5 24 24 24 24" stroke="#7C3AED" strokeWidth="1.2" strokeLinecap="round"/>
     {/* Antena */}
-    <circle cx="20" cy="8" r="2.5" fill="white"/>
-    <rect x="19" y="8" width="2" height="6" fill="white"/>
+    <circle cx="20" cy="7" r="2.5" fill="white"/>
+    <rect x="19" y="7" width="2" height="6" rx="1" fill="white"/>
   </svg>
 );
 
-// Ícone de Chat para botão flutuante - Bolha moderna
+// Ícone de Chat - Estilo CRIA
 export const ChatBubbleIcon = ({ size = 28 }) => (
   <svg width={size} height={size} viewBox="0 0 32 32" fill="none">
-    <defs>
-      <filter id="innerShadow" x="-20%" y="-20%" width="140%" height="140%">
-        <feGaussianBlur in="SourceAlpha" stdDeviation="1" result="blur"/>
-        <feOffset in="blur" dx="0" dy="1" result="offsetBlur"/>
-        <feComposite in="SourceGraphic" in2="offsetBlur" operator="over"/>
-      </filter>
-    </defs>
     {/* Bolha principal */}
     <path 
       d="M16 4C8.82 4 3 9.056 3 15.294c0 3.458 1.686 6.564 4.356 8.666L6 27l5.148-2.25c1.5.5 3.13.779 4.852.779 7.18 0 13-5.056 13-11.294C29 8.056 23.18 4 16 4z" 
       fill="white"
     />
-    {/* Pontos de digitação */}
-    <circle cx="11" cy="15" r="2" fill="#7A2FF2"/>
-    <circle cx="16" cy="15" r="2" fill="#9D5CFF"/>
-    <circle cx="21" cy="15" r="2" fill="#7A2FF2"/>
+    {/* Pontos de digitação - cores CRIA */}
+    <circle cx="11" cy="15" r="2" fill="#7C3AED"/>
+    <circle cx="16" cy="15" r="2" fill="#8B5CF6"/>
+    <circle cx="21" cy="15" r="2" fill="#A78BFA"/>
   </svg>
 );
 
-// Badge IA - Sparkle elegante
+// Badge IA - Sparkle CRIA
 export const AISparkleIcon = ({ size = 12 }) => (
   <svg width={size} height={size} viewBox="0 0 16 16" fill="currentColor">
-    <path d="M8 0L9.2 5.2L14.5 6L9.2 6.8L8 12L6.8 6.8L1.5 6L6.8 5.2L8 0Z" fillOpacity="0.95"/>
-    <circle cx="13.5" cy="2.5" r="1.5" fillOpacity="0.7"/>
-    <circle cx="2.5" cy="11.5" r="1" fillOpacity="0.5"/>
+    <path d="M8 0L9.4 5.4L14.5 6L9.4 6.6L8 12L6.6 6.6L1.5 6L6.6 5.4L8 0Z" fillOpacity="0.95"/>
+    <circle cx="13" cy="2.5" r="1.5" fillOpacity="0.7"/>
+    <circle cx="2.5" cy="12" r="1" fillOpacity="0.5"/>
   </svg>
 );
 
-// Ícone de Enviar - Avião moderno e elegante
+// Ícone de Enviar - Avião CRIA
 export const SendIcon = ({ size = 18 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
     <defs>
       <linearGradient id="sendGradient" x1="0%" y1="0%" x2="100%" y2="100%">
         <stop offset="0%" stopColor="white"/>
-        <stop offset="100%" stopColor="rgba(255,255,255,0.8)"/>
+        <stop offset="100%" stopColor="rgba(255,255,255,0.85)"/>
       </linearGradient>
     </defs>
     <path 
@@ -78,7 +74,7 @@ export const SendIcon = ({ size = 18 }) => (
   </svg>
 );
 
-// Loader elegante
+// Loader CRIA
 export const LoaderIcon = ({ size = 18 }) => (
   <svg 
     width={size} 
@@ -86,13 +82,12 @@ export const LoaderIcon = ({ size = 18 }) => (
     viewBox="0 0 24 24" 
     fill="none"
     className="animate-spin"
-    style={{ animation: 'spin 1s linear infinite' }}
   >
     <circle 
       cx="12" cy="12" r="9" 
       stroke="currentColor" 
       strokeWidth="2.5" 
-      strokeOpacity="0.2"
+      strokeOpacity="0.25"
       fill="none"
     />
     <path 
@@ -104,7 +99,7 @@ export const LoaderIcon = ({ size = 18 }) => (
   </svg>
 );
 
-// Botão fechar - X refinado
+// Botão fechar
 export const CloseIcon = ({ size = 20 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
     <path 
@@ -116,7 +111,7 @@ export const CloseIcon = ({ size = 20 }) => (
   </svg>
 );
 
-// Ícone de verificado/online
+// Indicador online
 export const OnlineIcon = ({ size = 12 }) => (
   <svg width={size} height={size} viewBox="0 0 16 16" fill="none">
     <circle cx="8" cy="8" r="7" fill="#10B981"/>
@@ -130,24 +125,20 @@ export const OnlineIcon = ({ size = 12 }) => (
   </svg>
 );
 
-// Ícone alternativo do bot - mais minimalista
+// Avatar minimalista alternativo
 export const BotMinimalIcon = ({ size = 24 }) => (
   <svg width={size} height={size} viewBox="0 0 32 32" fill="none">
     <defs>
       <linearGradient id="botMinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="#9D5CFF"/>
-        <stop offset="100%" stopColor="#6B21A8"/>
+        <stop offset="0%" stopColor="#A78BFA"/>
+        <stop offset="100%" stopColor="#7C3AED"/>
       </linearGradient>
     </defs>
-    {/* Cabeça */}
-    <rect x="6" y="10" width="20" height="16" rx="4" fill="url(#botMinGrad)"/>
-    {/* Olhos */}
-    <rect x="10" y="15" width="4" height="5" rx="1.5" fill="white"/>
-    <rect x="18" y="15" width="4" height="5" rx="1.5" fill="white"/>
-    {/* Antena */}
+    <rect x="6" y="10" width="20" height="16" rx="5" fill="url(#botMinGrad)"/>
+    <rect x="10" y="15" width="4" height="5" rx="2" fill="white"/>
+    <rect x="18" y="15" width="4" height="5" rx="2" fill="white"/>
     <rect x="15" y="4" width="2" height="6" rx="1" fill="url(#botMinGrad)"/>
     <circle cx="16" cy="4" r="2.5" fill="url(#botMinGrad)"/>
-    {/* Sorriso */}
     <path d="M12 22C12 22 13.5 24 16 24C18.5 24 20 22 20 22" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
   </svg>
 );
