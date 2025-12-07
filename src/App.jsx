@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { BotAvatarIcon, AISparkleIcon, ChatBubbleIcon, CloseIcon, OnlineIcon } from "./components/Icons";
 import MensagemForm from "./mensagemForm";
+import { sendMessageToMistral } from "./services/mistralApi";
 
 export default function App() {
   const [aberto, setAberto] = useState(false);
@@ -41,6 +42,35 @@ export default function App() {
     "Dicas de redação",
     "Competências ENEM",
   ];
+
+  const enviarSugestao = async (texto) => {
+    // constrói histórico para a API sem o marcador de pensamento
+    const historyForApi = [...chatHistory, { role: "user", text: texto }];
+    // mostra imediatamente no chat com indicador de pensando
+    setChatHistory([...historyForApi, { role: "thinking", text: "" }]);
+
+    try {
+      const resposta = await sendMessageToMistral(historyForApi, texto);
+
+      setChatHistory((history) => {
+        const novaLista = [...history];
+        novaLista.pop(); // remove "thinking"
+        novaLista.push({ role: "bot", text: resposta });
+        return novaLista;
+      });
+    } catch (error) {
+      setChatHistory((history) => {
+        const novaLista = [...history];
+        novaLista.pop(); // remove "thinking"
+        novaLista.push({
+          role: "bot",
+          text: "Ops! 😅 Tive um probleminha. Pode tentar de novo?",
+        });
+        return novaLista;
+      });
+      console.error("Erro ao enviar sugestão:", error);
+    }
+  };
 
   const shouldShowAvatar = (index) => {
     if (chatHistory[index].role === "user") return false;
@@ -265,11 +295,7 @@ export default function App() {
                     <button
                       key={texto}
                       onClick={() => {
-                        setChatHistory((prev) => [
-                          ...prev,
-                          { role: "user", text: texto },
-                          { role: "thinking", text: "" },
-                        ]);
+                        enviarSugestao(texto);
                       }}
                       style={{ 
                         padding: '10px 16px',
