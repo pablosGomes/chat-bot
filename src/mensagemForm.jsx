@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { motion } from "framer-motion";
 import { SendIcon, LoaderIcon } from "./components/Icons";
 import { sendMessageToMistral } from "./services/mistralApi";
 
@@ -60,19 +61,21 @@ const MensagemForm = ({ setChatHistory, chatHistory }) => {
   };
 
   return (
-    <form 
+    <motion.form 
       onSubmit={handleSubmit} 
       className="flex items-center"
+      animate={{
+        scale: focused ? 1.01 : 1,
+        boxShadow: focused 
+          ? '0 0 0 4px rgba(139, 92, 246, 0.12), 0 4px 16px rgba(124, 58, 237, 0.08)' 
+          : '0 0 0 0px rgba(139, 92, 246, 0)',
+      }}
+      transition={{ type: "spring", stiffness: 400, damping: 25 }}
       style={{ 
         background: focused ? '#FFFFFF' : '#F9FAFB',
         border: focused ? '2px solid #8B5CF6' : '2px solid #E5E7EB',
         borderRadius: '28px',
         padding: '5px',
-        transition: 'all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)',
-        boxShadow: focused 
-          ? '0 0 0 4px rgba(139, 92, 246, 0.12), 0 4px 16px rgba(124, 58, 237, 0.08)' 
-          : 'none',
-        transform: focused ? 'scale(1.01)' : 'scale(1)',
       }}
     >
       <input
@@ -96,14 +99,20 @@ const MensagemForm = ({ setChatHistory, chatHistory }) => {
           color: '#1F2937',
           outline: 'none',
           border: 'none',
-          transition: 'opacity 0.2s ease',
         }}
       />
       
-      <button
+      <motion.button
         type="submit"
         disabled={enviando}
         aria-label="Enviar mensagem"
+        whileHover={!enviando ? { scale: 1.12 } : undefined}
+        whileTap={!enviando ? { scale: 0.9 } : undefined}
+        animate={{
+          boxShadow: enviando 
+            ? 'none' 
+            : '0 4px 14px rgba(124, 58, 237, 0.3)'
+        }}
         className="shrink-0 flex items-center justify-center"
         style={{ 
           width: '46px',
@@ -114,38 +123,20 @@ const MensagemForm = ({ setChatHistory, chatHistory }) => {
             : 'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)',
           color: '#FFFFFF',
           cursor: enviando ? 'not-allowed' : 'pointer',
-          transition: 'all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)',
-          boxShadow: enviando ? 'none' : '0 4px 14px rgba(124, 58, 237, 0.3)',
-          transform: 'scale(1)',
-        }}
-        onMouseEnter={(e) => {
-          if (!enviando) {
-            e.currentTarget.style.transform = 'scale(1.15)';
-            e.currentTarget.style.boxShadow = '0 8px 24px rgba(124, 58, 237, 0.4)';
-          }
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.transform = 'scale(1)';
-          e.currentTarget.style.boxShadow = enviando ? 'none' : '0 4px 14px rgba(124, 58, 237, 0.3)';
-        }}
-        onMouseDown={(e) => {
-          if (!enviando) {
-            e.currentTarget.style.transform = 'scale(0.9)';
-          }
-        }}
-        onMouseUp={(e) => {
-          if (!enviando) {
-            e.currentTarget.style.transform = 'scale(1.15)';
-          }
         }}
       >
         {enviando ? (
-          <LoaderIcon size={20} />
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+          >
+            <LoaderIcon size={20} />
+          </motion.div>
         ) : (
           <SendIcon size={18} />
         )}
-      </button>
-    </form>
+      </motion.button>
+    </motion.form>
   );
 };
 
