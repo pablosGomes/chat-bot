@@ -181,4 +181,5 @@ def chat():
 
 
 # Para Vercel
-# app = app
+app.debug = True
+handler = app

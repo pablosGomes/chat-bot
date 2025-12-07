@@ -30,3 +30,4 @@ def health():
     })
 
 # app = app
+handler = app
