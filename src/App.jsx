@@ -94,12 +94,12 @@ const pulseVariants = {
 
 const typingDotVariants = {
   animate: (i) => ({
-    y: [0, -8, 0],
-    opacity: [0.5, 1, 0.5],
+    y: [0, -4, 0],
+    opacity: [0.4, 1, 0.4],
     transition: {
-      duration: 0.6,
+      duration: 1.2,
       repeat: Infinity,
-      delay: i * 0.15,
+      delay: i * 0.2,
       ease: "easeInOut"
     }
   })
