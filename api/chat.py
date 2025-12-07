@@ -105,7 +105,7 @@ def save_conversation(session_id: str, user_message: str, bot_response: str):
 # ========================================
 
 @app.route("/api/chat", methods=["POST", "OPTIONS"])
-def handler():
+def chat():
     """Handler para Vercel Serverless"""
     
     if request.method == "OPTIONS":
@@ -181,4 +181,4 @@ def handler():
 
 
 # Para Vercel
-app = app
+# app = app

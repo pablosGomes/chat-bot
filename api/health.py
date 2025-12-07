@@ -9,7 +9,7 @@ app = Flask(__name__)
 MONGO_URI = os.getenv("MONGODB_URI")
 
 @app.route("/api/health", methods=["GET"])
-def handler():
+def health():
     """Health check endpoint"""
     mongo_status = "not_configured"
     
@@ -29,4 +29,4 @@ def handler():
         "timestamp": datetime.utcnow().isoformat()
     })
 
-app = app
+# app = app
