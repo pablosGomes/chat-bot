@@ -77,7 +77,7 @@ Sempre responda em português brasileiro. Seja concisa mas completa. Use um tom 
 def save_conversation(session_id: str, user_message: str, bot_response: str):
     """Salva conversa no MongoDB"""
     database = get_db()
-    if not database:
+    if database is None:
         return
     
     try:
