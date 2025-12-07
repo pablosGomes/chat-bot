@@ -5,11 +5,9 @@
   "outputDirectory": "dist",
   "functions": {
     "api/chat.py": {
-      "runtime": "python3.11",
       "maxDuration": 10
     },
     "api/health.py": {
-      "runtime": "python3.11",
       "maxDuration": 5
     }
   },
