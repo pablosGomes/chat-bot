@@ -105,28 +105,6 @@ const typingDotVariants = {
   })
 };
 
-const avatarBreathVariants = {
-  animate: {
-    scale: [1, 1.03, 1],
-    transition: {
-      duration: 3,
-      repeat: Infinity,
-      ease: "easeInOut"
-    }
-  }
-};
-
-const onlinePulseVariants = {
-  animate: {
-    scale: [1, 1.2, 1],
-    opacity: [1, 0.7, 1],
-    transition: {
-      duration: 2,
-      repeat: Infinity,
-      ease: "easeInOut"
-    }
-  }
-};
 
 export default function App() {
   const [aberto, setAberto] = useState(false);
@@ -244,12 +222,8 @@ export default function App() {
                 }}
               >
                 <div className="flex items-center gap-3">
-                  {/* Avatar com breathing */}
-                  <motion.div 
-                    className="relative"
-                    variants={avatarBreathVariants}
-                    animate="animate"
-                  >
+                  {/* Avatar */}
+                  <div className="relative">
                     <div 
                       className="flex items-center justify-center overflow-hidden"
                       style={{ 
@@ -262,22 +236,21 @@ export default function App() {
                     >
                       <BotAvatarIcon size={42} />
                     </div>
-                    <motion.div 
-                      className="absolute flex items-center justify-center"
-                      variants={onlinePulseVariants}
-                      animate="animate"
+                    {/* Bolinha online */}
+                    <div 
                       style={{ 
+                        position: 'absolute',
                         bottom: '-2px', 
                         right: '-2px',
-                        background: 'white',
+                        width: '14px',
+                        height: '14px',
+                        background: '#10B981',
                         borderRadius: '50%',
-                        padding: '2px',
+                        border: '2px solid white',
                         boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
                       }}
-                    >
-                      <OnlineIcon size={14} />
-                    </motion.div>
-                  </motion.div>
+                    />
+                  </div>
                   
                   <div className="text-white">
                     <div className="flex items-center gap-2">
@@ -479,11 +452,7 @@ export default function App() {
                   transition={{ delay: 0.3 }}
                   style={{ marginTop: '14px' }}
                 >
-                  <motion.div 
-                    variants={onlinePulseVariants}
-                    animate="animate"
-                    style={{ width: '6px', height: '6px', background: '#10B981', borderRadius: '50%' }} 
-                  />
+                  <div style={{ width: '6px', height: '6px', background: '#10B981', borderRadius: '50%' }} />
                   <span style={{ fontSize: '11px', color: '#9CA3AF', fontWeight: 500 }}>
                     Powered by <span style={{ color: '#7C3AED', fontWeight: 600 }}>CRIA</span>
                   </span>
@@ -533,22 +502,20 @@ export default function App() {
             >
               <ChatBubbleIcon size={30} />
               
-              {/* Indicador online */}
-              <motion.div 
-                className="absolute"
-                variants={onlinePulseVariants}
-                animate="animate"
+              {/* Bolinha online */}
+              <div 
                 style={{ 
+                  position: 'absolute',
                   top: '2px', 
                   right: '2px',
-                  background: 'white',
+                  width: '14px',
+                  height: '14px',
+                  background: '#10B981',
                   borderRadius: '50%',
-                  padding: '2px',
+                  border: '2px solid white',
                   boxShadow: '0 2px 6px rgba(0,0,0,0.12)'
                 }}
-              >
-                <OnlineIcon size={12} />
-              </motion.div>
+              />
             </motion.div>
           </motion.button>
         )}
