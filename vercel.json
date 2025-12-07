@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "framework": "vite",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "functions": {
+    "api/*.py": {
+      "runtime": "@vercel/python@4.0.0"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/chat",
+      "destination": "/api/chat"
+    },
+    {
+      "source": "/api/health",
+      "destination": "/api/health"
+    }
+  ]
+}
