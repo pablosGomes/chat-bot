@@ -18,8 +18,8 @@ CORS(app)
 MISTRAL_API_URL = "https://api.mistral.ai/v1/chat/completions"
 MISTRAL_API_KEY = os.getenv("MISTRAL_API_KEY")
 # Ajustes de qualidade x velocidade (valores podem ser alterados por env)
-MISTRAL_MAX_TOKENS = int(os.getenv("MISTRAL_MAX_TOKENS", "512"))
-MISTRAL_TEMPERATURE = float(os.getenv("MISTRAL_TEMPERATURE", "0.6"))
+MISTRAL_MAX_TOKENS = int(os.getenv("MISTRAL_MAX_TOKENS", "400"))
+MISTRAL_TEMPERATURE = float(os.getenv("MISTRAL_TEMPERATURE", "0.45"))
 MISTRAL_HISTORY_LIMIT = int(os.getenv("MISTRAL_HISTORY_LIMIT", "8"))
 
 # MongoDB
@@ -79,10 +79,11 @@ SYSTEM_MESSAGE = {
 - Para dúvidas ou problemas, direcionar para a página de Contato ou ícone de reporte (exclamação laranja) no sistema.
 
 ## Como responder (formato sugerido)
-- Comece com uma frase direta que atende a pergunta.
-- Em seguida, traga bullets curtos e práticos (3-6) ou passos numerados se for tutorial.
-- Quando aplicável, inclua: como enviar redação, diferença correção rápida vs detalhada, uso de moedas, e onde falar com suporte.
-- Se o usuário relatar problema, peça dados mínimos: tipo de conta (aluno independente ou vinculado), tipo de correção (rápida/detalhada), dispositivo, e descreva o passo em que o erro ocorre.
+- Primeiro, 1 frase direta respondendo a pergunta.
+- Depois, 3-6 bullets curtos (sem parágrafos longos). Use passos numerados se for tutorial.
+- Inclua quando fizer sentido: como enviar redação, diferença correção rápida vs detalhada, uso de moedas, onde falar com suporte.
+- Se o usuário relatar problema, peça: tipo de conta (independente/vinculado), tipo de correção (rápida/detalhada), dispositivo e passo onde falhou.
+- Evite blocos longos; priorize clareza e objetividade. Termine com um convite à ação simples (ex.: “Quer que eu detalhe o próximo passo?”).
 """
 }
 
