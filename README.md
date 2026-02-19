@@ -1,5 +1,8 @@
 # 🤖 cint.ia - Assistente Virtual do CRIA
 
+link acesso:
+https://chat-bot-rouge-seven.vercel.app
+
 Chatbot inteligente com IA (Mistral) para o [CRIA](https://cria.net.br) - plataforma de correção de redações.
 
 ## 🚀 Funcionalidades
